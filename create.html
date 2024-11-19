@@ -1,0 +1,38 @@
+<?php
+require 'db.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'] ?? '';
+    $content = $_POST['content'] ?? '';
+
+    if ($title && $content) {
+        $statement = $pdo->prepare('INSERT INTO posts (title, content) VALUES (:title, :content)');
+        $statement->execute([':title' => $title, ':content' => $content]);
+        header('Location: index.php');
+        exit;
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Post</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Create New Post</h1>
+    <form method="POST">
+        <label>Title:</label>
+        <input type="text" name="title" required>
+        <br>
+        <label>Content:</label>
+        <textarea name="content" required></textarea>
+        <br>
+        <button type="submit">Save</button>
+        <a href="index.php">Cancel</a>
+    </form>
+</body>
+</html>
+

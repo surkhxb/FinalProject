@@ -1,0 +1,32 @@
+<?php
+require 'db.php';
+
+$statement = $pdo->query('SELECT * FROM posts ORDER BY created_at DESC');
+$posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blog Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>All Blog Posts</h1>
+    <a href="create.php">Create New Post</a>
+    <ul>
+        <?php foreach ($posts as $post): ?>
+            <li>
+                <h2><?= htmlspecialchars($post['title']) ?></h2>
+                <p><?= htmlspecialchars($post['content']) ?></p>
+                <small>Created at: <?= $post['created_at'] ?></small>
+                <br>
+                <a href="edit.php?id=<?= $post['id'] ?>">Edit</a>
+                <a href="delete.php?id=<?= $post['id'] ?>" onclick="return confirm('Are you sure?');">Delete</a>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</body>
+</html>
+
